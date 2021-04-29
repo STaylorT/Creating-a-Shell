@@ -3,27 +3,38 @@
 #include <string.h>
 
 #define BUFFERSIZE 256
-void scanner(char command[]){
-	
-	char str[256];
+
+
+
+#define PS "$"
+
+// parse the command line into tokens
+void scanner(char str[]){
+		 
+	char* tokens[BUFFERSIZE/2]; // array of strings holding our tokens
+	for (int i = 0 ; i < BUFFERSIZE/2 ; i++){ //initializing array of strings to null
+		tokens[i] = NULL;
+	}
 	int init_size = strlen(str);
-	char delim[] = " ";
+	int i =0;
+	
+	char delim[] = " "; // the characters we want to separate tokens by
 
-	char *ptr = strtok(str, delim);
+	char *token = strtok(str, delim); //our token
 
-	while(ptr != NULL)
+	while(token != NULL) // make sure strtok returned string
 	{
-		printf("'%s'\n", ptr);
-		ptr = strtok(NULL, delim);
+		printf("%s\n", token); // print each token
+		tokens[i] = token;
+    	 	token = strtok(NULL, delim);
+    	 	i++;
+	}
+	for (int j = 0 ; j < BUFFERSIZE/2 ;j++){
+		if (tokens[j] != NULL){
+			printf("Token array[%d]: %s\n",j,tokens[j]);
+		}
 	}
 
-	/* This loop will show that there are zeroes in the str after tokenizing */
-	for (int i = 0; i < init_size; i++)
-	{
-		printf("%c ", str[i]); /* Convert the character to integer, in this case
-							   the character's ASCII equivalent */
-	}
-	printf("\n");
 }
 
 void parser(char* arr[]){
@@ -31,14 +42,14 @@ void parser(char* arr[]){
 }
 int main(){
 
-	char str[] = "banana";
+	char str[BUFFERSIZE] = "";
 	char exit[] = "exit";
 	
 	int res = strcmp(str,exit);
 	
 	while (res!=0){
 		
-		printf("$");
+		printf(PS);
 		if(fgets(str,BUFFERSIZE, stdin)!=NULL){
 			scanner(str);
 		}
