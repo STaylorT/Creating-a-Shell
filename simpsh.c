@@ -61,12 +61,49 @@ void listVariables(char varArray[maxVars][maxChars]) {
         for (int i = 0; i < numVars; ++i) 
         	printf("%s = %s\n", varArray[i], getenv(varArray[i]));
 }	
-
+void scanner(char str[]){
+	/* Create tokens */
+	char *tokens[maxChars];
+	int i = 0;               
+	char delimit[]= "\x20\t\n\0"; // the characters we want to separate tokens by 
+	
+	tokens[0] = strtok(buf, delim);
+   	
+   	while (tokens[i] != NULL) {
+    		i++;
+      		tokens[i] = strtok(NULL, delim);
+   	}
+   		memset(buf, 0, sizeof(buf));
+   		parser(tokens);
+   }
+void parser(char* tokens){
+ 
+ 	
+   //	int j=i-1; //i is the number of tokens, while j is the index of the last value
+   	
+	/* Check first token for command type */
+	if 	(!strcmp(tokens[0], "#")) {}  	//literally nothing happens for comments
+	else if (!strcmp(tokens[0], "cd"))
+		changeDirectory(tokens[1]);
+	else if (i!=1 && !strcmp(tokens[1], "="))    //!i makes sure there's more than one token
+		setVar(tokens[0], tokens[2], varArray);
+	else if (!strcmp(tokens[0], "lv"))
+		listVariables(varArray);
+	else if (!strcmp(tokens[0], "unset"))
+		unsetVar(tokens[1], varArray);
+	else if (!strcmp(tokens[0], "!"))
+		printf("uh something happens here\n");
+	else if (!strcmp(tokens[0], "quit"))
+		quit();
+	else
+		printf("syntax error\n");
+	memset(tokens, 0, sizeof(tokens));
+}
+	
 int main() {
 	char varArray[maxVars][maxChars];
 	char wd[256];
 	char buf[maxChars];  //buffer for input
-	char delimit[]= "\x20\t\n\0";
 	//setenv("IGNOREEOF", "", 1); //ctrl-d does not end shell and this variable cannot be changed
 	setenv("PATH", "/bin:/usr/bin", 1);
 	
@@ -82,39 +119,9 @@ int main() {
 	fgets(buf, maxChars, stdin); //take command input
 	fflush(stdin);
 	
-	/* Create tokens */
-	char *token[maxChars];
-	int i = 0;                
 	
-	token[0] = strtok(buf, delimit);
-   	
-   	while (token[i] != NULL) {
-    		i++;
-      		token[i] = strtok(NULL, delimit);
-   	}
+	scanner(buf);
 
-   	int j=i-1; //i is the number of tokens, while j is the index of the last value
-   	
-	/* Check first token for command type */
-	if 	(!strcmp(token[0], "#")) {}  			//literally nothing happens for comments
-	else if (!strcmp(token[0], "cd"))
-		changeDirectory(token[1]);
-	else if (i!=1 && !strcmp(token[1], "="))              //!i makes sure there's more than one token
-		setVar(token[0], token[2], varArray);
-	else if (!strcmp(token[0], "lv"))
-		listVariables(varArray);
-	else if (!strcmp(token[0], "unset"))
-		unsetVar(token[1], varArray);
-	else if (!strcmp(token[0], "!"))
-		printf("uh something happens here\n");
-	else if (!strcmp(token[0], "quit"))
-		quit();
-	else
-		printf("syntax error\n");
-	
-		
-	memset(buf, 0, sizeof(buf));
-	memset(token, 0, sizeof(token));
 	
 	}
 }
