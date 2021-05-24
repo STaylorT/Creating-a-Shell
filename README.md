@@ -12,7 +12,7 @@ Simpshsupports the following commands.Each input line must begin with one of the
 
 •cd  dirName— This command changessimpsh’s current directory todirName.  You donotneed to handlecdwith no parameters—unlike a shell likebash, which understands the absenceof parameters to “change to the home directory”.  (See thegetwd(3)andchdir(2)systemcalls.)   After  this  command,  any  program  thatsimpshstarts  will  run  withdirNameas  itsworking directory.  This command also updates the value of the variableCWD, see below.
 
-•variable = value— Herevariableis any reasonable variable name (first character is a letter,others are letters or numbers), and thevalueis a single token.  The spaces around the = tokenare required.  The effect of this command is to store the value of the variable insidesimpshfor later substitution.  Certain special variables are maintained bysimpshitself, as describedbelow.
+•variable = value— Herevariableis any reasonable variable name (first character is a letter,others are letters or numbers), and thevalueis a single token.  The spaces around the = tokenare required.  The effect of this command is to store the value of the variable insidesimpshfor later substitution.  Certain special variables are maintained bysimpshitself, as describedbelow. ; VARIABLES have to start with a lowercase letter
 
 •lv— this command (“list variables”) causessimpshto print a list of all the variables thathave been assigned a value, including the predefined ones (see below).
 
